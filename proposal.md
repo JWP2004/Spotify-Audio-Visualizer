@@ -25,10 +25,10 @@ Finally, the audio visualizer. I'll use Pygame, Libriosa, and PyAudio to get the
 # Outcomes
 
 Ideal Outcome:
-The outcome I'd like from this project is to create a simple but clean audio visualizer that a user could have running on a separate monitor to provide a more immersive experience to the user whenever they listen to music on their Spotify program.
+- The outcome I'd like from this project is to create a simple but clean audio visualizer that a user could have running on a separate monitor to provide a more immersive experience to the user whenever they listen to music on their Spotify program.
 
 Minimal Viable Outcome:
-If implementing the Spotify features fails, I still want the user to be able to use the audio visualizer for their musical needs. If the audio visualizer fails and the Spotify features get added correctly, the user can still see the song name and time length from the program.
+- If implementing the Spotify features fails, I still want the user to be able to use the audio visualizer for their musical needs. If the audio visualizer fails and the Spotify features get added correctly, the user can still see the song name and time length from the program.
 
 # Milestones
 Each week, I'll use the lecture's set date and my current schedule to work on the code for this program.
