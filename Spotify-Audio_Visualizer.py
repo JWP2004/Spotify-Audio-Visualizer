@@ -3,6 +3,11 @@ import sounddevice as sd
 import numpy as np
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+import threading
+import time
+from PIL import Image
+import requests
+from io import BytesIO
 
 # Sound Config
 SAMPLE_RATE = 44100
@@ -21,6 +26,39 @@ class SpotifyManager:
             redirect_uri='REDIRECT_URI',
             scope='user-read-playback-state,user-modify-playback-state'
         ))
+        self.track_title = "Loading..."
+        self.album_art = None
+        self.progress_ms = 0
+        self.duration_ms = 1
+        self.art_lock = threading.Lock()
+        threading.Thread(target=self.update_loop, daemon=True).start()
+
+    def update_loop(self):
+        while True:
+            try:
+                current = self.sp.current_playback()
+                if current and current.get("item"):
+                    track = current["item"]
+                    title = track["name"]
+                    artist = ", ".join([a["name"] for a in track["artists"]])
+                    url = track["album"]["images"][0]["url"]
+                    image = self.load_album_art(url)
+                    with self.art_lock:
+                        self.track_title = f"{title} - {artist}"
+                        self.album_art = image
+                        self.progress_ms = current["progress_ms"]
+                        self.duration_ms = track["duration_ms"]
+            except:
+                pass
+            time.sleep(1)
+
+    def load_album_art(self, url):
+        try:
+            r = requests.get(url)
+            img = Image.open(BytesIO(r.content)).convert("RGBA")
+            return pygame.image.fromstring(img.tobytes(), img.size, img.mode)
+        except:
+            return None
 
 class AudioInput:
     # ran into issues on testing, have to use 3rd party software to capture sound for spotify, create README file on how to setup
