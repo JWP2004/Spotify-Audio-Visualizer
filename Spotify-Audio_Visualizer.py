@@ -111,6 +111,25 @@ class Visualizer:
         points = [(x, waveform[x]) for x in range(WIDTH)]
         pygame.draw.aalines(screen, (200, 200, 200), False, points)
 
+
+        with self.spotify.art_lock:
+             if self.spotify.album_art:
+                art_size = 200
+                art = pygame.transform.smoothscale(self.spotify.album_art, (art_size, art_size))
+                screen.blit(art, (screen.get_width() - art_size - 20, 20))
+
+        title = font.render(self.spotify.track_title, True, (255, 255, 255))
+        screen.blit(title, (20, 20))
+
+        # Time stamp bar
+        bar_x, bar_y = 20, screen.get_height() - 50
+        bar_width = screen.get_width() - 40
+        bar_height = 10
+        pygame.draw.rect(screen, (100, 100, 100), (bar_x, bar_y, bar_width, bar_height))
+        progress_ratio = self.spotify.progress_ms / self.spotify.duration_ms
+        pygame.draw.rect(screen, (255, 255, 255), (bar_x, bar_y, int(bar_width * progress_ratio), bar_height))
+
+
 pygame.init()
 screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE)
 pygame.display.set_caption("Spotify Audio Visualizer")
