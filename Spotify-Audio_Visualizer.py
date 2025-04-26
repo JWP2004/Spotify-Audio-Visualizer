@@ -12,6 +12,7 @@ from io import BytesIO
 # Sound Config
 SAMPLE_RATE = 44100
 CHUNK_SIZE = 1024
+FPS = 60
 
 # Spotipy Dev Data (cant show key on public repo)
 SPOTIFY_CLIENT_ID = 'KEY WILL BE ADDED FOR FINAL FOR SECURITY REASONS'
@@ -148,17 +149,27 @@ class Visualizer:
         pygame.draw.rect(screen, (255, 255, 255), (bar_x, bar_y, int(bar_width * progress_ratio), bar_height))
 
 
-pygame.init()
-screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE)
-pygame.display.set_caption("Spotify Audio Visualizer")
-running = True
+class FullProgram:
+    def __init__(self):
+        pygame.init()
+        self.screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE)
+        self.clock = pygame.time.Clock()
+        self.font = pygame.font.SysFont('Bahnschrift', 24)
+        self.spotify = SpotifyManager()
+        self.audio_input = AudioInput()
+        self.visualizer = Visualizer(self.audio_input, self.spotify)
+        self.running = True
 
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    def run(self):
+        while self.running:
+            self.visualizer.draw(self.screen, self.font)
+            pygame.display.flip()
+            self.clock.tick(60)
 
-    screen.fill((0, 0, 0))
-    pygame.display.flip()
+        self.audio_input.stream.stop()
+        self.audio_input.stream.close()
+        pygame.quit()
 
-pygame.quit()
+if __name__ == '__main__':
+    app = FullProgram()
+    app.run()
