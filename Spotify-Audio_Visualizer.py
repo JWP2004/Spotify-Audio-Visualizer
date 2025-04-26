@@ -21,9 +21,9 @@ REDIRECT_URI = 'http://127.0.0.1:9090/callback'
 class SpotifyManager:
     def __init__(self):
         self.sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
-            client_id='CLIENT_ID',
-            client_secret='CLIENT_SECRET',
-            redirect_uri='REDIRECT_URI',
+            client_id=SPOTIFY_CLIENT_ID,
+            client_secret=CLIENT_SECRET,
+            redirect_uri=REDIRECT_URI,
             scope='user-read-playback-state,user-modify-playback-state'
         ))
         self.track_title = "Loading..."
@@ -31,7 +31,8 @@ class SpotifyManager:
         self.progress_ms = 0
         self.duration_ms = 1
         self.art_lock = threading.Lock()
-        threading.Thread(target=self.update_loop, daemon=True).start()
+        self.thread = threading.Thread(target=self.update_loop, daemon=True)
+        self.thread.start()
 
     def update_loop(self):
         while True:
@@ -39,27 +40,44 @@ class SpotifyManager:
                 current = self.sp.current_playback()
                 if current and current.get("item"):
                     track = current["item"]
-                    title = track["name"]
                     artist = ", ".join([a["name"] for a in track["artists"]])
-                    url = track["album"]["images"][0]["url"]
-                    image = self.load_album_art(url)
+                    title = track["name"]
+                    image_url = track["album"]["images"][0]["url"]
+                    progress = current["progress_ms"]
+                    duration = track["duration_ms"]
+                    art = self.load_album_art(image_url) if image_url else None
                     with self.art_lock:
                         self.track_title = f"{title} - {artist}"
-                        self.album_art = image
-                        self.progress_ms = current["progress_ms"]
-                        self.duration_ms = track["duration_ms"]
-            except:
+                        self.album_art = art
+                        self.progress_ms = progress
+                        self.duration_ms = duration
+            except Exception:
                 pass
             time.sleep(1)
 
     def load_album_art(self, url):
         try:
-            r = requests.get(url)
-            img = Image.open(BytesIO(r.content)).convert("RGBA")
-            return pygame.image.fromstring(img.tobytes(), img.size, img.mode)
+            response = requests.get(url)
+            image = Image.open(BytesIO(response.content)).convert("RGBA")
+            return pygame.image.fromstring(image.tobytes(), image.size, image.mode)
         except:
             return None
 
+    def control_playback(self, action):
+        try:
+            if action == "previous":
+                self.sp.previous_track()
+            elif action == "play_pause":
+                if self.sp.current_playback()["is_playing"]:
+                    self.sp.pause_playback()
+                else:
+                    self.sp.start_playback()
+            elif action == "next":
+                self.sp.next_track()
+        except Exception as e:
+            print(f"Spotify API error: {e}")
+            
+            
 class AudioInput:
     # ran into issues on testing, have to use 3rd party software to capture sound for spotify, create README file on how to setup
     def __init__(self):
