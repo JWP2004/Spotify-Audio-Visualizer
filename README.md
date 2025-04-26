@@ -7,6 +7,8 @@ The Program will not work if you dont have the drivers installed
 
 # How to use
 Before launching the program have your output device be CABLE INPUT (VB-AUDIO) and then use voice meeter banana to input the virtual cable and set the output on voicemeeter to be you desired speakers/headphone.
+
+
 <img width="268" alt="image" src="https://github.com/user-attachments/assets/a4733a55-071d-4fc0-b491-336112af3f59" />
 
 <img width="766" alt="image" src="https://github.com/user-attachments/assets/05a31a1b-c82a-4f66-bfbf-f1d59459b838" />
