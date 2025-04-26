@@ -1,10 +1,26 @@
 import pygame
 import sounddevice as sd
 import numpy as np
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
 
 # Sound Config
 SAMPLE_RATE = 44100
 CHUNK_SIZE = 1024
+
+# Spotipy Dev Data (cant show key on public repo)
+SPOTIFY_CLIENT_ID = 'KEY WILL BE ADDED FOR FINAL FOR SECURITY REASONS'
+CLIENT_SECRET = 'KEY WILL BE ADDED FOR FINAL FOR SECURITY REASONS'
+REDIRECT_URI = 'http://127.0.0.1:9090/callback'
+
+class SpotifyManager:
+    def __init__(self):
+        self.sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+            client_id='CLIENT_ID',
+            client_secret='CLIENT_SECRET',
+            redirect_uri='REDIRECT_URI',
+            scope='user-read-playback-state,user-modify-playback-state'
+        ))
 
 class AudioInput:
     # ran into issues on testing, have to use 3rd party software to capture sound for spotify, create README file on how to setup
