@@ -204,7 +204,7 @@ class Visualizer:
 
 
 
-class FullProgram:
+class Main:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE)
@@ -265,5 +265,5 @@ class FullProgram:
     
 
 if __name__ == '__main__':
-    app = FullProgram()
+    app = Main()
     app.run()
