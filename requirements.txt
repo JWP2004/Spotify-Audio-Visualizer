@@ -1,0 +1,10 @@
+pygame
+sounddevice
+numby
+spotipy
+SpotipyOAuth
+threading
+time
+pillow
+requests
+io
