@@ -9,14 +9,15 @@ from PIL import Image
 import requests
 from io import BytesIO
 
+
 # Sound Config (DONT CHANGE THESE APART FROM FPS)
 SAMPLE_RATE = 44100
 CHUNK_SIZE = 1024
 FPS = 60
 
-# Spotipy Dev Data (cant show key on public repo)
-SPOTIFY_CLIENT_ID = 'KEY WILL BE ADDED FOR FINAL FOR SECURITY REASONS'
-CLIENT_SECRET = 'KEY WILL BE ADDED FOR FINAL FOR SECURITY REASONS'
+# Spotipy Dev Data 
+SPOTIFY_CLIENT_ID = 'INPUT CLIENT ID HERE'
+CLIENT_SECRET = 'INPUT CLIENT SECRET HERE'
 REDIRECT_URI = 'http://127.0.0.1:9090/callback'
 
 class SpotifyManager:
@@ -201,7 +202,7 @@ class Visualizer:
             label_rect = label_surface.get_rect(center=(x + media_button_width // 2, media_button_y + media_button_height // 2))
             screen.blit(label_surface, label_rect)
 
-# HOLY SHIT THIS WAS HORRIBLE TO WRITE, works well though :)
+
 
 class FullProgram:
     def __init__(self):
@@ -260,7 +261,7 @@ class FullProgram:
                     if rect.collidepoint(mouse_pos):
                         self.spotify.control_playback(action)
 
-# My brain hurts :(
+
     
 
 if __name__ == '__main__':
