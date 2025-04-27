@@ -19,3 +19,7 @@ If launching from the executable you dont need to provide a client id or secret 
 But if launching from a coding program you must input your own ID and Key from the Spotify for Developers website (https://developer.spotify.com/)
 
 this is mainly for security reasons.
+
+
+https://github.com/user-attachments/assets/6ca9b6db-e582-4350-a965-074be5b1d236
+
